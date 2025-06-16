@@ -4,7 +4,7 @@
  *
  * description: use the puts fuction to print a message to the standard output
  *
- * return: Always 0 (Success)
+ * return: 0 if the program completes successfully
  */
 int main(void)
 {
