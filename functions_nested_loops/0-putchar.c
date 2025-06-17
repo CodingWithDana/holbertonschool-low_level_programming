@@ -2,15 +2,15 @@
 
 int main(void)
 {
-    char *str = "_putchar";
-    int i = 0;
+	int i = 0;
+	char *str = "_putchar";
 
-    while (str[i])
-    {
-        _putchar(str[i]);
-        i++;
-    }
-    _putchar('\n');
+	while (str[i])
+	{
+		_putchar(str[i]);
+		i++;
+	}
+	_putchar('\n');
 
-    return 0;
+	return (0);
 }
