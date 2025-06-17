@@ -1,13 +1,16 @@
-#include <stdio.h>
-/**
- * main - Entry point
- *
- * Description: prints _putchar, followed by a new line
- *
- * Return: Always 0
- */
+#include "main.h"
+
 int main(void)
 {
-    printf("_putchar\n");
+    char *str = "_putchar";
+    int i = 0;
+
+    while (str[i])
+    {
+        _putchar(str[i]);
+        i++;
+    }
+    _putchar('\n');
+
     return 0;
 }
