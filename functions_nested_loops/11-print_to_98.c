@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
- * print_number - Prints an integer using _putchar
- * @n: Integer to print
+ * print_to_98 - print all natural numbers from n to 98
+ * @n: the starting number to begin printing from
  */
 void print_number(int n)
 {
