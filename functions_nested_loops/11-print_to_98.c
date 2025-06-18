@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
- * print_to_98 - print all natural numbers from n to 98
- * @n: the starting number to begin printing from
+ * print_number - Prints an integer using _putchar
+ * @n: The number to print
  */
 void print_number(int n)
 {
@@ -18,6 +18,10 @@ void print_number(int n)
 	_putchar((n % 10) + '0');
 }
 
+/**
+ * print_to_98 - Prints all natural numbers from n to 98, followed by a newline
+ * @n: The starting number to begin printing from
+ */
 void print_to_98(int n)
 {
 	int i;
