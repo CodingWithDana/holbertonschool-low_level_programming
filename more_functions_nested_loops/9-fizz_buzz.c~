@@ -1,9 +1,0 @@
-#include <stdio.h>
-/**
- * main - Prints numbers from 0 to 100
- *               for multiples of three, print Fizz
- *               for multiples of five, print Buzz
- *               for multiples of 3 and five, print FizzBuzz
- *
- * Return: void
- */
