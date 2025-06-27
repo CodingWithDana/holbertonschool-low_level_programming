@@ -5,7 +5,7 @@
  * print_array - prints n elements of an array of integers,
  *                                  followed by a new line
  * @a: pointer to the array of integers
- * @b: number of elements of the array to be printed
+ * @n: number of elements of the array to be printed
  * Return: void
  */
 
