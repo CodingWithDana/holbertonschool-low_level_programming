@@ -14,24 +14,23 @@ char *_strpbrk(char *s, char *accept)
 	/* Go through each character in s that is not null */
 	while (*pointer_to_s != '\0')
 	{
-		/* Declare new pointer inside this loop to point to the start of accept string */
+		/* Declare new pointer to point to the start of accept string */
 		char *pointer_to_accept = accept;
 
-		/* Check current character in s string against each character in accept string */
+		/* Check current char in s str against each charac in accept str */
 		while (*pointer_to_accept != '\0')
 		{
 			/* If a match is found */
 			if (*pointer_to_s == *pointer_to_accept)
 				/* Point the pointer s to the matched character in s string */
-				return pointer_to_s;
-			
+				return (pointer_to_s);
 			/* Move to next character in pointer_to_accept */
 			pointer_to_accept++;
 		}
 
 		pointer_to_s++;
 	}
-	
+
 	/* No match found in the entire string */
 	return (NULL);
 }
