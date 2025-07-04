@@ -17,13 +17,13 @@ int is_positive_number(const char *s)
 	/* Check each argument to ensure it's a digit */
 	while (*s != '\0')
 	{
-		if (isdigit(*s) != 0)
+		if (isdigit(*s) == 0)
 		{
-			return (0);
+			return (1);
 		}
 		s++;
 	}
-	return (1);
+	return (0);
 }
 
 /**
