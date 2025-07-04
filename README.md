@@ -1,1 +1,1 @@
-# holbertonschool-low_level_programming
+Topics covered: functions & loops, pointers, arrays, recursion, argc & argv
