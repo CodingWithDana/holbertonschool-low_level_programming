@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		/* If the argument is a digit */
 		if (is_positive_number(argv[i]) != 0)
 		{
-			printf("Error");
+			printf("Error\n");
 			return (1);
 		}
 		sum = sum + atoi(argv[i]);
