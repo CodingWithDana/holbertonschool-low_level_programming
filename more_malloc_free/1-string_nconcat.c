@@ -17,15 +17,15 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 	unsigned int len2 = 0;
 	char *concatenated_string;
 
-	/* If NULL is passed, treat as empty string */
 	if (s1 == NULL)
 		s1 = "";
 	if (s2 == NULL)
 		s2 = "";
 
-	/* Calc the length of each string */
-	len1 = strlen(s1);
-	len2 = strlen(s2);
+	while (s1[len1] != '\0')
+		len1++;
+	while (s2[len2] != '\0')
+		len2++;
 
 	/* If n is more than the length of s2, just use entire s2 */
 	if (n >= len2)
@@ -34,19 +34,16 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 	/* Allocate memory for the concatenated_string: */
 	/* len1 from s1 + n from s2 + 1 for the \0 ) */
 	concatenated_string = malloc(len1 + n + 1);
-	/* Check for if memory allocation fails */
+	/* Check for when malloc fails */
 	if (concatenated_string == NULL)
 		return (NULL);
 
-	/* Copy s1 into the concatenated_string */
 	for (i = 0; i < len1; i++)
 		concatenated_string[i] = s1[i];
 
-	/* Copy the first n bytes of s2 into the concatenated_string after s1 */
 	for (j = 0; j < n; j++)
 		concatenated_string[i + j] = s2[j];
 
-	/* Null terminate the concatenated_string */
 	concatenated_string[i + j] = '\0';
 
 	return (concatenated_string);
