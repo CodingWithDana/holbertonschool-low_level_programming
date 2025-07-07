@@ -34,7 +34,8 @@ char *str_concat(char *s1, char *s2)
 	concatenated_string = malloc(sizeof(char) * (len1 + len2 + 1));
 
 	/* Check if malloc has memory issue (e.g out of memory) */
-	free(concatenated_string);
+	if (concatenated_string == NULL)
+		return (NULL);
 
 	/* Copy s1 into concatenated_string */
 	for (i = 0; i < len1; i++)
