@@ -19,25 +19,29 @@ int main(int argc, char *argv[])
 	if (argc != 4)
 	{
 		printf("Error\n");
+		/* Exit with specifc error code */
 		exit(98);
 	}
 
-	/* Choose the correct function for the operator, otherwise error code for invalid operator */
+	/* Choose the correct function for the operator, */
+	/*	otherwise error code for invalid operator */
 	operation = get_op_func(argv[2]);
 	if (operation == NULL)
 	{
-		printf("Error\");
+		printf("Error\n");
+		/* Exit with specific error code */
 		exit(99);
 	}
 
 	/* Convert the operand strings to integers */
 	num1 = atoi(argv[1]);
-	num2 = atoi(argv[3);
+	num2 = atoi(argv[3]);
 
 	/* Check for division or modulo by 0 */
-	if ((argv[2][0] == '/' || argv[2][0] = '%') && num2 == 0)
+	if ((argv[2][0] == '/' || argv[2][0] == '%') && num2 == 0)
 	{
 		printf("Error\n");
+		/* Exit with specific error code */
 		exit(100);
 	}
 
