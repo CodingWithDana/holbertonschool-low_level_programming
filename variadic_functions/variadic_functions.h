@@ -1,4 +1,3 @@
-#include <stddef.h>
 #ifndef VARIADIC_FUNCTIONS
 #define VARIADIC_FUNCTIONS
 
