@@ -1,1 +1,1 @@
-Topics covered: functions & loops, pointers, arrays, recursion, argc & argv
+Topics covered: C foundations
