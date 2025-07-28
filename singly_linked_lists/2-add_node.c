@@ -11,6 +11,9 @@ list_t *add_node(list_t **head, const char *str)
 {
 	list_t *new_node;
 	char *dup_str;
+	/* length of the duplicated string */
+	int count = 0;
+	int dup_str_len = 0;
 
 	if (str == NULL)
 		return (NULL);
@@ -26,8 +29,14 @@ list_t *add_node(list_t **head, const char *str)
 		return (NULL);
 	}
 
+	if(dup_str != NULL)
+	{
+		count++;
+		dup_str_len = count + 1;
+	}
+
 	new_node->str = dup_str;
-	new_node->len = strlen(dup_str);
+	new_node->len = dup_str_len;
 	new_node->next = *head;
 	*head = new_node;
 
