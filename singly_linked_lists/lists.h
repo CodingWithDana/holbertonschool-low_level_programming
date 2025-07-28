@@ -3,7 +3,8 @@
 #include <stddef.h>
 
 /* Create a struct list_t */
-typedef struct list {
+typedef struct list
+{
 	char *str;
 	unsigned int len;
 	struct list *next;
