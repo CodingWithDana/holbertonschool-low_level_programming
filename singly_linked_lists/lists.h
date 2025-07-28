@@ -5,7 +5,7 @@
 /* Create a struct list_t */
 typedef struct list {
 	char *str;
-	unsigned int length;
+	unsigned int len;
 	struct list *next;
 } list_t;
 
