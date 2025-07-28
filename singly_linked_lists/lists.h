@@ -1,7 +1,12 @@
 #ifndef LISTS_H
 #define LISTS_H
 #include <stddef.h>
-
+/**
+ * struct list - a list's basic info
+ * @str: pointer to a string
+ * @len: the length of the string
+ * @next: pointer to the next element/node in the list
+ */
 /* Create a struct list_t */
 typedef struct list
 {
