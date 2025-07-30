@@ -1,0 +1,11 @@
+Write a function that prints all the elements of a dlistint_t list.
+
+Prototype: size_t print_dlistint(const dlistint_t *h);
+Return: the number of nodes
+Format: see example
+julien@ubuntu:~/Doubly linked lists$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 0-main.c 0-print_dlistint.c -o a
+julien@ubuntu:~/Doubly linked lists$ ./a 
+9
+8
+-> 2 elements
+julien@ubuntu:~/Doubly linked lists$  
