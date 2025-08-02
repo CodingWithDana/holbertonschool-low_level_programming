@@ -4,7 +4,7 @@
 /**
   * create_file - create a file
   * @filename: name of the the file to create
-  * @text_content: NULL-terminated string to write to the file 
+  * @text_content: NULL-terminated string to write to the file
   * Return: 1 if successful, -1 if failed
   */
 int create_file(const char *filename, char *text_content)
