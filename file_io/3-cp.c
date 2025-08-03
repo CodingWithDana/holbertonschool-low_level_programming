@@ -38,7 +38,8 @@ void validate_arguments(int argc)
  * @file_to: Destination file path
  * @file_to_exists: Pointer to store existence flag
  */
-void check_same_file(const char *file_from, const char *file_to, int *file_to_exists)
+void check_same_file(const char *file_from, const char *file_to,
+					 int *file_to_exists)
 {
 	struct stat st_from, st_to;
 
@@ -98,64 +99,6 @@ int open_file_write(const char *filename, int file_to_exists)
 }
 
 /**
- * copy_file - Copies data from source to destination starting from initial buffer
- * @fd_from: Source file descriptor
- * @fd_to: Destination file descriptor
- * @file_from: Source file name for error messages
- * @buffer: Initial buffer read data
- * @read_bytes: Number of bytes read in initial read
- */
-void copy_file(int fd_from, int fd_to, const char *file_from,
-	       char *buffer, ssize_t read_bytes)
-{
-	ssize_t written_bytes;
-	ssize_t total_written;
-
-	while (read_bytes > 0)
-	{
-		total_written = 0;
-		while (total_written < read_bytes)
-		{
-			written_bytes = write(fd_to, buffer + total_written, read_bytes - total_written);
-			if (written_bytes == -1)
-			{
-				close(fd_from);
-				close(fd_to);
-				error_exit(99, "Error: Can't write to %s\n", file_from);
-			}
-			total_written += written_bytes;
-		}
-		read_bytes = read(fd_from, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
-		{
-			close(fd_from);
-			close(fd_to);
-			error_exit(98, "Error: Can't read from file %s\n", file_from);
-		}
-	}
-}
-
-/**
- * cleanup - Closes both file descriptors with error handling
- * @fd_from: Source file descriptor
- * @fd_to: Destination file descriptor
- */
-void cleanup(int fd_from, int fd_to)
-{
-	if (close(fd_from) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
-		exit(100);
-	}
-
-	if (close(fd_to) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
-		exit(100);
-	}
-}
-
-/**
  * main - Entry point, handles file copy logic
  * @argc: Argument count
  * @argv: Argument values
@@ -167,6 +110,8 @@ int main(int argc, char *argv[])
 	int fd_to;
 	int file_to_exists = 0;
 	ssize_t read_bytes;
+	ssize_t written_bytes;
+	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 
 	validate_arguments(argc);
@@ -184,10 +129,41 @@ int main(int argc, char *argv[])
 
 	fd_to = open_file_write(argv[2], file_to_exists);
 
-	/* Start copying from the first read */
-	copy_file(fd_from, fd_to, argv[1], buffer, read_bytes);
+	while (read_bytes > 0)
+	{
+		total_written = 0;
+		while (total_written < read_bytes)
+		{
+			written_bytes = write(fd_to, buffer + total_written, read_bytes - total_written);
+			if (written_bytes == -1)
+			{
+				close(fd_from);
+				close(fd_to);
+				error_exit(99, "Error: Can't write to %s\n", argv[2]);
+			}
+			total_written += written_bytes;
+		}
 
-	cleanup(fd_from, fd_to);
+		read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			close(fd_from);
+			close(fd_to);
+			error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+		}
+	}
+
+	/* Cleanup */
+	if (close(fd_from) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
+		exit(100);
+	}
+	if (close(fd_to) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
+		exit(100);
+	}
 
 	return (0);
 }
