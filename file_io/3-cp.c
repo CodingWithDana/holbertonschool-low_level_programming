@@ -60,14 +60,16 @@ int main(int argc, char *argv[])
 	if (fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 
-	/* BEGIN: Trigger fake read error */
-	if (fstat(fd_from, &st_from) == -1)
+	/* First real read: PRECHECK */
+	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+	if (read_bytes == -1)
 	{
 		close(fd_from);
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 	}
 	/* END: read check */
 
+	/* Only open fd_to after confirming source is readable */
 	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (fd_to == -1)
 	{
@@ -79,16 +81,9 @@ int main(int argc, char *argv[])
 	if (!file_to_exists)
 		fchmod(fd_to, 0664);
 
-	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+	/* Copy the already-read buffer (if any)*/
+	while (read_bytes > 0)
 	{
-        if (read_bytes == -1)
-        {
-            close(fd_from);
-            close(fd_to);
-            dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-            exit(98);
-        }
-
         total_written = 0;
         while (total_written < read_bytes)
 		{
@@ -101,6 +96,14 @@ int main(int argc, char *argv[])
 				exit(99);
             }
 			total_written += written_bytes;
+		}
+		/* Next read */
+		read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			close(fd_from);
+			close(fd_to);
+			error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 		}
 	}
 
