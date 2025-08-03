@@ -82,11 +82,6 @@ int main(int argc, char *argv[])
 				dprintf(STDERR_FILENO, "Can't read from file %s\n", argv[1]);
 				exit(98);
 			}
-			// if (!file_to_exists)
-			// 	fchmod(fd_to, 0664);
-
-			// fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-			// first_read = 0;
 		}
 
         total_written = 0;
