@@ -19,6 +19,15 @@ void error_exit(int code, const char *message, const char *arg)
 	exit(code);
 }
 
+/**
+ * prepare_files - Validates arguments, checks file conflict, opens files
+ * @argc: Number of command-line arguments
+ * @argv: Array of argument strings (argument vector)
+ * @fd_from: Pointer to file descriptor for source file
+ * @fd_to: Pointer to file descriptor for destination file
+ * @buffer: Buffer used to read file content
+ * @read_bytes: Pointer to number of bytes read into buffer
+ */
 void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 				   char *buffer, ssize_t *read_bytes)
 {
@@ -84,7 +93,7 @@ int main(int argc, char *argv[])
 		while (total_written < read_bytes)
 		{
 			written_bytes = write(fd_to, buffer + total_written,
-			 read_bytes - total_written);
+			read_bytes - total_written);
 			if (written_bytes == -1)
 			{
 				close(fd_from);
