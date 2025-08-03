@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		dprintf(STDERR_FILENO, "Usage: %s file_from file_to\n", argv[0]);
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
 	
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 				close(fd_to);
 				error_exit(99, "Error: Can't write to %s\n", argv[2]);
             		}
-		total_written += written_bytes;
+			total_written += written_bytes;
 		}
 	}
 
