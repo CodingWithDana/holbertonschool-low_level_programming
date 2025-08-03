@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
-	int first_read = 1;
 
 	if (argc != 3)
 	{
@@ -74,16 +73,6 @@ int main(int argc, char *argv[])
 
 	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
 	{
-		if (first_read)
-		{
-			if (fd_to == -1)
-			{
-				close(fd_from);
-				dprintf(STDERR_FILENO, "Can't read from file %s\n", argv[1]);
-				exit(98);
-			}
-		}
-
         total_written = 0;
         while (total_written < read_bytes)
 		{
