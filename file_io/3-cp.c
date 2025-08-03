@@ -73,8 +73,7 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 int main(int argc, char *argv[])
 {
 	int fd_from, fd_to;
-	ssize_t read_bytes;
-	ssize_t written_bytes;
+	ssize_t read_bytes, written_bytes;
 	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 
