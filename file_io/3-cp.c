@@ -21,8 +21,8 @@ void error_exit(int code, const char *message, const char *arg)
 
 /**
  * prepare_files - Validates arguments, checks file conflict, opens files
- * @argc: Number of command-line arguments
- * @argv: Array of argument strings (argument vector)
+ * @argc: Argumetn count
+ * @argv: Array of argument values (argument vector)
  * @fd_from: Pointer to file descriptor for source file
  * @fd_to: Pointer to file descriptor for destination file
  * @buffer: Buffer used to read file content
@@ -76,7 +76,7 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 /**
  * main - Entry point, handles file copy logic
  * @argc: Argument count
- * @argv: Argument values
+ * @argv: Array of argument values
  * Return: 0 on success
  */
 int main(int argc, char *argv[])
