@@ -75,18 +75,21 @@ int main(int argc, char *argv[])
         	{
                 	close(fd_from);
                 	close(fd_to);
-			error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+			exit(98);
 		}
+
 		/* end of file */
 		if (read_bytes == 0)
 			break;
 
 		written_bytes = write(fd_to, buffer, read_bytes);
-		if (written_bytes != read_bytes)
+		if (written_bytes == -1 || written_bytes != read_bytes)
 		{
 			close(fd_from);
 			close(fd_to);
-			error_exit(99, "Error: Can't write to %s\n", argv[2]);
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			exit(99);
 		}
 	}
 
