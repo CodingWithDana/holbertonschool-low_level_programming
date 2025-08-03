@@ -110,6 +110,13 @@ void copy_file(int fd_from, int fd_to, const char *file_from)
 	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 
+	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+	if (read_bytes == -1)
+	{
+		close(fd_from);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+	}
+
 	while (read_bytes > 0)
 	{
 		total_written = 0;
