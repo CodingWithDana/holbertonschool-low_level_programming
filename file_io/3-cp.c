@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
 
 	if (!file_to_exists)
 		fchmod(fd_to, 0664);
-	fchmod(fd_to, 0664);
 
 	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
 	{
