@@ -24,16 +24,13 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 {
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
-
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-
 	if (stat(argv[1], &st_from) == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
-
 	if (stat(argv[2], &st_to) == 0)
 	{
 		file_to_exists = 1;
@@ -46,18 +43,15 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 	}
 	else if (errno != ENOENT)
 		error_exit(99, "Error: Can't write to %s\n", argv[2]);
-
 	*fd_from = open(argv[1], O_RDONLY);
 	if (*fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
-
 	*read_bytes = read(*fd_from, buffer, BUFFER_SIZE);
 	if (*read_bytes == -1)
 	{
 		close(*fd_from);
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 	}
-
 	*fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (*fd_to == -1)
 	{
