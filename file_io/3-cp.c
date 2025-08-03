@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #define BUFFER_SIZE 1024
 /**
   * error_exit - handle error messages and exit with given code
@@ -79,6 +80,11 @@ int main(int argc, char *argv[])
 			if (fd_to == -1)
 			{
 				close(fd_from);
+				if (errno == EACCES)
+				{
+					dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+					return (0);
+				}
 				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 				exit(99);
 			}
