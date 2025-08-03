@@ -105,16 +105,7 @@ int main(int argc, char *argv[])
 			}
 			total_written += written_bytes;
 		}
-	}
-	
-		written_bytes = write(fd_to, buffer, read_bytes);
-		if (written_bytes != read_bytes)
-		{
-			close(fd_from);
-			close(fd_to);
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			exit(99);
-		}
+	}	
 
 	if (close(fd_from) == -1)
 	{
