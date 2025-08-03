@@ -27,8 +27,8 @@ void error_exit(int code, const char *message, const char *arg)
   */
 int main(int argc, char *argv[])
 {
-	int fd_from, int fd_to = -1;
-	ssize_t read_bytes, ssize_t written_bytes, ssize_t total_written;
+	int fd_from; int fd_to = -1;
+	ssize_t read_bytes; ssize_t written_bytes; ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
