@@ -25,6 +25,7 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
 	if (argc != 3)
+
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
@@ -76,13 +77,15 @@ int main(int argc, char *argv[])
 	ssize_t written_bytes;
 	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
+
 	prepare_files(argc, argv, &fd_from, &fd_to, buffer, &read_bytes);
 	while (read_bytes > 0)
 	{
 		total_written = 0;
 		while (total_written < read_bytes)
 		{
-			written_bytes = write(fd_to, buffer + total_written, read_bytes - total_written);
+			written_bytes = write(fd_to, buffer + total_written,
+			 read_bytes - total_written);
 			if (written_bytes == -1)
 			{
 				close(fd_from);
