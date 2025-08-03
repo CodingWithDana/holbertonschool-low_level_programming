@@ -28,13 +28,14 @@ void error_exit(int code, const char *message, const char *arg)
 int main(int argc, char *argv[])
 {
 	int fd_from;
-       	int fd_to;
+       	int fd_to = -1;
 	ssize_t read_bytes;
 	ssize_t written_bytes;
 	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
+	int first_read = 1;
 
 	if (argc != 3)
 	{
@@ -60,19 +61,23 @@ int main(int argc, char *argv[])
 	if (fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 
-	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (fd_to == -1)
-	{
-		close(fd_from);
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		exit(99);
-	}
-
-	if (!file_to_exists)
-		fchmod(fd_to, 0664);
-
 	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
 	{
+		if (first_read)
+		{
+			fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+			if (fd_to == -1)
+			{
+				close(fd_from);
+				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+				exit(99);
+			}
+			if (!file_to_exists)
+				fchmod(fd_to, 0664);
+			
+			first_read = 0;
+		}
+		
         	total_written = 0;
         	while (total_written < read_bytes)
 		{
@@ -91,7 +96,8 @@ int main(int argc, char *argv[])
 	if (read_bytes == -1)
     	{
         	close(fd_from);
-        	close(fd_to);
+		if (fd_to != -1)
+			close(fd_to);
         	dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
     	}
