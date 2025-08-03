@@ -24,6 +24,7 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
 {
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
+
 	if (argc != 3)
 
 	{
@@ -71,8 +72,7 @@ void prepare_files(int argc, char *argv[], int *fd_from, int *fd_to,
  */
 int main(int argc, char *argv[])
 {
-	int fd_from;
-	int fd_to;
+	int fd_from, fd_to;
 	ssize_t read_bytes;
 	ssize_t written_bytes;
 	ssize_t total_written;
