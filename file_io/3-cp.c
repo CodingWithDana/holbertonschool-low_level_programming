@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
-	int first_read = 1;
 
 if (argc != 3)
     {
@@ -128,10 +127,12 @@ if (argc != 3)
     }
 
     if (close(fd_from) == -1)
-        error_exit(100, "Error: Can't close fd %d\n", fd_from);
+        dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
+		exit(100);
 
     if (close(fd_to) == -1)
-        error_exit(100, "Error: Can't close fd %d\n", fd_to);
+        dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
+		exit(100);
 
     return (0);
 }
