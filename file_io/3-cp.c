@@ -64,7 +64,8 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 	{
 		close(fd_from);
-		error_exit(99, "Error: Can't write to %s\n", argv[2]);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
 	}
 
 	if (!file_to_exists)
@@ -80,7 +81,8 @@ int main(int argc, char *argv[])
             		{	
 				close(fd_from);
 				close(fd_to);
-				error_exit(99, "Error: Can't write to %s\n", argv[2]);
+				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+				exit(99);
             		}
 			total_written += written_bytes;
 		}
@@ -90,7 +92,8 @@ int main(int argc, char *argv[])
     	{
         	close(fd_from);
         	close(fd_to);
-        	error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+        	dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
     	}
 
     	if (close(fd_from) == -1)
