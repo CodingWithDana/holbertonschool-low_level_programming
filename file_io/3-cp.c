@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	if (stat(argv[2], &st_to) == 0)
 		file_to_exists = 1;
 	else if (errno != ENOENT)
-		error_exit(99, "Error 1: Can't write to %s\n", argv[2]);
+		error_exit(99, "Error: Can't write to %s\n", argv[2]);
 
 	if (file_to_exists && st_from.st_ino == st_to.st_ino && st_from.st_dev == st_to.st_dev)
 	{
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 	{
 		close(fd_from);
-		dprintf(STDERR_FILENO, "Error 2: Can't write to %s\n", argv[2]);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 		exit(99);
 	}
 
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 			{	
 				close(fd_from);
 				close(fd_to);
-				dprintf(STDERR_FILENO, "Error 3: Can't write to %s\n", argv[2]);
+				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 				exit(99);
             }
 			total_written += written_bytes;
