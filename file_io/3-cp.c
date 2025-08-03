@@ -114,7 +114,7 @@ void copy_file(int fd_from, int fd_to, const char *file_from)
 	if (read_bytes == -1)
 	{
 		close(fd_from);
-		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+		error_exit(98, "Error: Can't read from file %s\n", file_from);
 	}
 
 	while (read_bytes > 0)
