@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	if (fd_to == -1)
 	{
 		close(fd_from);
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		dprintf(STDERR_FILENO, "Error abcxyz: Can't write to %s\n", argv[2]);
 		exit(99);
 	}
 
