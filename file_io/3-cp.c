@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
+	char tmp;
 
 	if (argc != 3)
 	{
@@ -59,6 +60,19 @@ int main(int argc, char *argv[])
 	fd_from = open(argv[1], O_RDONLY);
 	if (fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+
+	/* BEGIN: Trigger fake read error */
+	if (read(fd_from, &tmp, 1) == -1)
+	{
+		close(fd_from);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+	}
+	/* Reset the file descriptor by closing and reopening */
+	close(fd_from);
+	fd_from = open(argv[1], O_RDONLY);
+	if (fd_from == -1)
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+	/* END: read check */
 
 	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (fd_to == -1)
