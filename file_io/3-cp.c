@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	{
 		close(fd_from);
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		exit(98);
+		exit(99);
 	}
 
 	if (!file_to_exists)
