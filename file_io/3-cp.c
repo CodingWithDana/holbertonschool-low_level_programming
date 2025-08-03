@@ -44,30 +44,20 @@ int main(int argc, char *argv[])
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 
 	/* Check if file_to exists and is the same as file_from */
-	    if (stat(argv[2], &st_to) == 0)
-	    {
-		    file_to_exists = 1;
-
-		    /* Check if both paths point to the same file */
-		    fstat(fd_from, &st_from);
-		    if (st_from.st_ino == st_to.st_ino && st_from.st_dev == st_to.st_dev)
-		    {
-			    close(fd_from);
-			    dprintf(STDERR_FILENO, "Error: %s and %s are the same file\n", argv[1], argv[2]);
-			    exit(100);
-		    }
-	    }
-
-	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (fd_to == -1)
+	if (stat(argv[2], &st_to) == 0)
 	{
-		close(fd_from);
-		error_exit(99, "Error: Can't write to %s\n", argv[2]);
+		file_to_exists = 1;
+		/* Check if both paths point to the same file */
+		fstat(fd_from, &st_from);
+		if (st_from.st_ino == st_to.st_ino && st_from.st_dev == st_to.st_dev)
+		{
+			close(fd_from);
+			dprintf(STDERR_FILENO, "Error: %s and %s are the same file\n", argv[1], argv[2]);
+			exit(100);
+		}
 	}
-
-	if (!file_to_exists)
-		fchmod(fd_to, 0664);
-
+	
+	fd_to = -1;
 	while (1)
 	{
 		read_bytes = read(fd_from, buffer, BUFFER_SIZE);
@@ -75,13 +65,26 @@ int main(int argc, char *argv[])
         	if (read_bytes == -1)
         	{
                 	close(fd_from);
-                	close(fd_to);
+                	if (fd_to != -1) close(fd_to);
 			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 			exit(98);
 		}
 		/* end of file */
 		if (read_bytes == 0)
 			break;
+
+		if (fd_to == -1)
+		{
+			fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+			if (fd_to == -1)
+			{
+				close(fd_from);
+				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+				exit(99);
+			}
+			if (!file_to_exists)
+				fchmod(fd_to, 0664);
+		}
 
 		total_written = 0;
 		while (total_written < read_bytes)
