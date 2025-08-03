@@ -79,12 +79,11 @@ int main(int argc, char *argv[])
 			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 			exit(98);
 		}
-
 		/* end of file */
 		if (read_bytes == 0)
 			break;
 
-		ssize_t total_written = 0;
+		total_written = 0;
 		while (total_written < read_bytes)
 		{
 			written_bytes = write(fd_to, buffer + total_written, read_bytes - total_written);
@@ -107,7 +106,6 @@ int main(int argc, char *argv[])
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 			exit(99);
 		}
-	}
 
 	if (close(fd_from) == -1)
 	{
