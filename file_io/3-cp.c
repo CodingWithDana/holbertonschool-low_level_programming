@@ -105,15 +105,10 @@ int open_file_write(const char *filename, int file_to_exists)
  */
 void copy_file(int fd_from, int fd_to, const char *file_from)
 {
-	ssize_t read_bytes, written_bytes, total_written;
+	ssize_t read_bytes = 0;
+	ssize_t written_bytes;
+	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
-
-	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
-	if (read_bytes == -1)
-	{
-		close(fd_from);
-		error_exit(98, "Error: Can't read from file %s\n", file_from);
-	}
 
 	while (read_bytes > 0)
 	{
@@ -167,11 +162,24 @@ void cleanup(int fd_from, int fd_to)
  */
 int main(int argc, char *argv[])
 {
-	int fd_from, fd_to, file_to_exists = 0;
+	int fd_from;
+	int fd_to;
+	int file_to_exists = 0;
+	ssize_t read_bytes;
+	char buffer[BUFFER_SIZE];
 
 	validate_arguments(argc);
 	check_same_file(argv[1], argv[2], &file_to_exists);
 	fd_from = open_file_read(argv[1]);
+
+	/* Precheck read BEFORE opening fd_to */
+	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+	if (read_bytes == -1)
+	{
+		close(fd_from);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+	}
+
 	fd_to = open_file_write(argv[2], file_to_exists);
 	copy_file(fd_from, fd_to, argv[1]);
 	cleanup(fd_from, fd_to);
