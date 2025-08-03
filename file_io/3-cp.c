@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	if (fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 
-	// Check if file_to exists and is the same as file_from
+	/* Check if file_to exists and is the same as file_from */
 	    if (stat(argv[2], &st_to) == 0)
 	    {
 
@@ -81,11 +81,15 @@ int main(int argc, char *argv[])
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 	}
 	if (close(fd_from) == -1)
+	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
 		exit(100);
+	}
 
 	if (close(fd_to) == -1)
+	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
 		exit(100);
+	}
 	return (0);
 }
