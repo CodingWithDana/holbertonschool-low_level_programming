@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
        	int fd_to;
 	ssize_t read_bytes;
 	ssize_t written_bytes;
+	ssize_t total_written;
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
 	int file_to_exists = 0;
@@ -83,8 +84,23 @@ int main(int argc, char *argv[])
 		if (read_bytes == 0)
 			break;
 
+		ssize_t total_written = 0;
+		while (total_written < read_bytes)
+		{
+			written_bytes = write(fd_to, buffer + total_written, read_bytes - total_written);
+			if (written_bytes == -1)
+			{
+				close(fd_from);
+				close(fd_to);
+				dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+				exit(99);
+			}
+			total_written += written_bytes;
+		}
+	}
+	
 		written_bytes = write(fd_to, buffer, read_bytes);
-		if (written_bytes == -1 || written_bytes != read_bytes)
+		if (written_bytes != read_bytes)
 		{
 			close(fd_from);
 			close(fd_to);
