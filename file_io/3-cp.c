@@ -172,9 +172,7 @@ int main(int argc, char *argv[])
 	int fd_from;
 	int fd_to;
 	int file_to_exists = 0;
-	ssize_t read_bytes;
-	char buffer[BUFFER_SIZE];
-
+	
 	validate_arguments(argc);
 	check_same_file(argv[1], argv[2], &file_to_exists);
 	fd_from = open_file_read(argv[1]);
