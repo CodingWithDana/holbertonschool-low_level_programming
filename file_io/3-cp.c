@@ -60,6 +60,12 @@ int main(int argc, char *argv[])
 	if (fd_from == -1)
 		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 
+	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+	if (read_bytes == -1)
+	{
+		close(fd_from);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+	}
 	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (fd_to == -1)
 	{
