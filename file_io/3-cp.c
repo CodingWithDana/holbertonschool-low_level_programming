@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 	ssize_t written_bytes;
 	char buffer[BUFFER_SIZE];
 	struct stat st_from, st_to;
+	int file_to_exists = 0;
 
 	if (argc != 3)
 	{
@@ -44,7 +45,9 @@ int main(int argc, char *argv[])
 	/* Check if file_to exists and is the same as file_from */
 	    if (stat(argv[2], &st_to) == 0)
 	    {
+		    file_to_exists = 1;
 
+		    /* Check if both paths point to the same file */
 		    fstat(fd_from, &st_from);
 		    if (st_from.st_ino == st_to.st_ino && st_from.st_dev == st_to.st_dev)
 		    {
@@ -54,12 +57,15 @@ int main(int argc, char *argv[])
 		    }
 	    }
 
-	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (fd_to == -1)
 	{
 		close(fd_from);
 		error_exit(99, "Error: Can't write to %s\n", argv[2]);
 	}
+
+	if (!file_to_exists)
+		fchmod(fd_to, 0664);
 	fchmod(fd_to, 0664);
 
 	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
