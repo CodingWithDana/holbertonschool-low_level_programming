@@ -69,8 +69,10 @@ int main(int argc, char *argv[])
 
 	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
 	{
-		written_bytes = write(fd_to, buffer, read_bytes);
+		if (read_bytes == 0)
+			break;
 
+		written_bytes = write(fd_to, buffer, read_bytes);
 		if (written_bytes != read_bytes)
 		{
 			close(fd_from);
