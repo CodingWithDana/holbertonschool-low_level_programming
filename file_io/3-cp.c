@@ -43,12 +43,14 @@ if (argc != 3)
     }
 
     if (stat(argv[1], &st_from) == -1)
-        error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+        dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
 
     if (stat(argv[2], &st_to) == 0)
         file_to_exists = 1;
     else if (errno != ENOENT)
-        error_exit(99, "Error: Can't write to %s\n", argv[2]);
+        dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
 
     if (file_to_exists &&
         st_from.st_ino == st_to.st_ino &&
@@ -60,21 +62,24 @@ if (argc != 3)
 
     fd_from = open(argv[1], O_RDONLY);
     if (fd_from == -1)
-        error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+        dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
 
     /* First read before creating output file */
     read_bytes = read(fd_from, buffer, BUFFER_SIZE);
     if (read_bytes == -1)
     {
         close(fd_from);
-        error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+        dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
     }
 
     fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
     if (fd_to == -1)
     {
         close(fd_from);
-        error_exit(99, "Error: Can't write to %s\n", argv[2]);
+        dprintf(STDERR_FILENO,"Error: Can't write to %s\n", argv[2]);
+		exit(99);
     }
 
     if (!file_to_exists)
@@ -97,7 +102,8 @@ if (argc != 3)
         {
             close(fd_from);
             close(fd_to);
-            error_exit(99, "Error: Can't write to %s\n", argv[2]);
+            dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			exit(99);
         }
         total_written += written_bytes;
     }
@@ -113,7 +119,8 @@ if (argc != 3)
             {
                 close(fd_from);
                 close(fd_to);
-                error_exit(99, "Error: Can't write to %s\n", argv[2]);
+                dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+				exit(99);
             }
             total_written += written_bytes;
         }
@@ -123,7 +130,8 @@ if (argc != 3)
     {
         close(fd_from);
         close(fd_to);
-        error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+        dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
     }
 
     if (close(fd_from) == -1)
