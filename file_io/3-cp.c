@@ -178,15 +178,6 @@ int main(int argc, char *argv[])
 	validate_arguments(argc);
 	check_same_file(argv[1], argv[2], &file_to_exists);
 	fd_from = open_file_read(argv[1]);
-
-	/* Precheck read BEFORE opening fd_to */
-	read_bytes = read(fd_from, buffer, BUFFER_SIZE);
-	if (read_bytes == -1)
-	{
-		close(fd_from);
-		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
-	}
-
 	fd_to = open_file_write(argv[2], file_to_exists);
 	copy_file(fd_from, fd_to, argv[1]);
 	cleanup(fd_from, fd_to);
