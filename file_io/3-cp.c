@@ -67,8 +67,17 @@ int main(int argc, char *argv[])
 	if (!file_to_exists)
 		fchmod(fd_to, 0664);
 
-	while ((read_bytes = read(fd_from, buffer, BUFFER_SIZE)) > 0)
+	while (1)
 	{
+		read_bytes = read(fd_from, buffer, BUFFER_SIZE);
+
+        	if (read_bytes == -1)
+        	{
+                	close(fd_from);
+                	close(fd_to);
+			error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+		}
+		/* end of file */
 		if (read_bytes == 0)
 			break;
 
@@ -81,12 +90,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (read_bytes == -1)
-	{
-		close(fd_from);
-		close(fd_to);
-		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
-	}
 	if (close(fd_from) == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
