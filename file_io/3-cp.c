@@ -10,7 +10,7 @@
   * @message: error message format string 
   * @arg: additional arguments (filename, file descriptor)
   */
-void error_exit(int code, const char *message, int arg)
+void error_exit(int code, const char *message, const char *arg)
 {
 	dprintf(STDERR_FILENO, message, arg);
 	exit (code);
@@ -26,9 +26,10 @@ int main(int argc, char *argv[])
 {
 	int fd_from;
        	int fd_to;
-	int read_bytes;
-	int written_bytes;
+	ssize_t read_bytes;
+	ssize_t written_bytes;
 	char buffer[BUFFER_SIZE];
+	struct stat st_from, st_to;
 
 	if (argc != 3)
 	{
@@ -38,13 +39,26 @@ int main(int argc, char *argv[])
 
 	fd_from = open(argv[1], O_RDONLY);
 	if (fd_from == -1)
-		error_exit(98, "Error: Can't read from file %s\n", (int)(intptr_t)argv[1]);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
+
+	// Check if file_to exists and is the same as file_from
+	    if (stat(argv[2], &st_to) == 0)
+	    {
+
+		    fstat(fd_from, &st_from);
+		    if (st_from.st_ino == st_to.st_ino && st_from.st_dev == st_to.st_dev)
+		    {
+			    close(fd_from);
+			    dprintf(STDERR_FILENO, "Error: %s and %s are the same file\n", argv[1], argv[2]);
+			    exit(100);
+		    }
+	    }
 
 	fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd_to == -1)
 	{
 		close(fd_from);
-		error_exit(99, "Error: Can't write to %s\n", (int)(intptr_t)argv[2]);
+		error_exit(99, "Error: Can't write to %s\n", argv[2]);
 	}
 	fchmod(fd_to, 0664);
 
@@ -56,7 +70,7 @@ int main(int argc, char *argv[])
 		{
 			close(fd_from);
 			close(fd_to);
-			error_exit(99, "Error: Can't write to %s\n", (int)(intptr_t)argv[2]);
+			error_exit(99, "Error: Can't write to %s\n", argv[2]);
 		}
 	}
 
@@ -64,13 +78,14 @@ int main(int argc, char *argv[])
 	{
 		close(fd_from);
 		close(fd_to);
-		error_exit(98, "Error: Can't read from file %s\n", (int)(intptr_t)argv[1]);
+		error_exit(98, "Error: Can't read from file %s\n", argv[1]);
 	}
 	if (close(fd_from) == -1)
-		error_exit(100, "Error: Can't close fd %d\n", fd_from);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
+		exit(100);
 
 	if (close(fd_to) == -1)
-		error_exit(100, "Error: Can't close fd %d\n", fd_to);
-
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
+		exit(100);
 	return (0);
 }
