@@ -1,0 +1,20 @@
+Write a function that retrieves a value associated with a key.
+
+Prototype: char *hash_table_get(const hash_table_t *ht, const char *key);
+where ht is the hash table you want to look into
+and key is the key you are looking for
+Returns the value associated with the element, or NULL if key couldn’t be found
+
+Terminal:
+
+julien@ubuntu:~/Hash tables$ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 4-main.c 0-hash_table_create.c 1-djb2.c 2-key_index.c 3-hash_table_set.c 4-hash_table_get.c -o e
+julien@ubuntu:~/Hash tables$ ./e 
+python:awesome
+Bob:and Kris love asm
+N:queens
+Asterix:Obelix
+Betty:Cool
+98:Battery Street
+c:isfun
+javascript:(null)
+julien@ubuntu:~/Hash tables$ 
