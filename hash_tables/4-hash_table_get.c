@@ -3,7 +3,7 @@
 #include <stdlib.h>
 /**
  * hash_table_get - retrieve the value associated with a given key
- * @ht: the hash table 
+ * @ht: the hash table
  * @key: the key you are looking for
  * Return: the value associated with the key, or NULL if not found
  */
