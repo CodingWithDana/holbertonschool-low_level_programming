@@ -28,7 +28,7 @@ void hash_table_print(const hash_table_t *ht)
 			if (printed_pair != '\0')
 				/* Print comma before printing next pair (if it's not the first) */
 				printf(", ");
-				
+
 			/* Print the key and value in the required format */
 			printf("'%s': '%s'", node->key, node->value);
 			/* Set flag to true after printing the first key-value pair */
