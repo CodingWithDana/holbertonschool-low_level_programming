@@ -1,5 +1,10 @@
 #include "hash_tables.h"
 #include <stdlib.h>
+/**
+ * hash_table_delete - frees a hash table and all its contents
+ * @ht: the hash table to free
+ * Return: nothing
+ */
 void hash_table_delete(hash_table_t *ht)
 {
 	/* Loop counter to iterate through the array index of the hash table */
@@ -29,7 +34,7 @@ void hash_table_delete(hash_table_t *ht)
 			free(node->value);
 			/* Free the node itself */
 			free(node);
-			
+
 			/* Move to the next node in the list */
 			node = temp;
 		}
